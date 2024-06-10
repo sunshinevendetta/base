@@ -1,34 +1,43 @@
-"use client";
-import { ThirdwebProvider, ConnectButton, darkTheme } from "thirdweb/react";
-import { client } from "./components/client";
-import { createWallet, walletConnect } from "thirdweb/wallets";
-import { baseSepolia, defineChain } from "thirdweb/chains";
-
-export default function Home() {
+import {
+    ThirdwebProvider,
+    ConnectButton,
+    darkTheme,
+  } from "thirdweb/react";
+  import { sepolia } from "thirdweb/chains";
+  import {
+    createWallet,
+    walletConnect,
+  } from "thirdweb/wallets";
+  
+  const client = createThirdwebClient({
+    clientId: "YOUR_CLIENT_ID",
+  });
+  
   const wallets = [
+    createWallet("io.metamask"),
     createWallet("com.coinbase.wallet"),
     walletConnect(),
+    createWallet("me.rainbow"),
+    createWallet("app.phantom"),
   ];
-
-  return (
-    <div className="flex justify-center items-center min-h-screen">
+  
+  export default function App() {
+    return (
       <ThirdwebProvider>
         <ConnectButton
           client={client}
           wallets={wallets}
           accountAbstraction={{
-            chain: defineChain(baseSepolia),
+            chain: sepolia,
+            factoryAddress: "YOUR_FACTORY_ADDRESS",
             gasless: true,
-          }}
-          appMetadata={{
-            name: "PWR2TP",
-            url: "https://members.pwr2tp.mx",
           }}
           theme={darkTheme({
             colors: {
               accentText: "#33ff5c",
-              accentButtonBg: "#2b9140",
+              accentButtonBg: "#33ff5c",
               modalBg: "#000000",
+              dropdownBg: "#000000",
               borderColor: "#fb00ff",
               separatorLine: "#fb00ff",
               danger: "#ff2a00",
@@ -36,14 +45,10 @@ export default function Home() {
               primaryButtonText: "#ede8ed",
               primaryButtonBg: "#ff00bb",
               secondaryButtonBg: "#000000",
-              secondaryIconHoverColor: "#359c46",
+              secondaryIconHoverColor: "#00ff33",
               secondaryIconColor: "#ffdd00",
-              secondaryIconHoverBg: "#00fa53",
+              secondaryIconHoverBg: "#00fa2a",
               skeletonBg: "#f312d5",
-              accentButtonText: "#ffffff",
-              secondaryButtonText: "#f2f2f2",
-              secondaryButtonHoverBg: "#729773",
-              selectedTextColor: "#e4e5e7",
             },
           })}
           connectButton={{ label: "start" }}
@@ -53,20 +58,21 @@ export default function Home() {
             titleIcon:
               "https://raw.githubusercontent.com/sunshinevendetta/pwrbeta/main/public/images/client/01.gif",
             welcomeScreen: {
-              title: "tutorial",
+              title: "how to connect?",
               img: {
                 src: "https://raw.githubusercontent.com/sunshinevendetta/pwrbeta/main/public/images/client/01.gif",
                 width: 150,
                 height: 150,
               },
               subtitle:
-                "If you don’t have a wallet, choose Coinbase so we create one for you for free // Si no tienes wallet, escoge Coinbase y te creamos una sin costo.",
+                "Select an option to connect. If you don’t have a wallet, choose Coinbase, and we will generate one for you.",
             },
-            termsOfServiceUrl: "https://pwr2tp.mx/terms",
-            privacyPolicyUrl: "https://pwr2tp.mx/privacy",
+            termsOfServiceUrl:
+              "https://pwr2tp.mx/terms",
+            privacyPolicyUrl:
+              "https://pwr2tp.mx/privacy",
           }}
         />
       </ThirdwebProvider>
-    </div>
-  );
-}
+    );
+  }
